@@ -43,9 +43,6 @@ class CMB2_Post_Search_field {
 		if ( $field->args('include_post_title') ) {
 			$title =  !empty($field->escaped_value) ?  get_the_title($field->escaped_value) : "";
 		 	echo "<label class='attached-post-title' for='" . $field->args('id') . "'>" . $title . "</label>";
-			if( !empty($title) ) {
-				echo '<div id="find-posts-clear"  class="dashicons cmb2-post-remove-button dashicons-trash"></div>';
-			}
 		}
 
 		echo $field_type->input( array(
@@ -58,6 +55,10 @@ class CMB2_Post_Search_field {
 				'includeposttitle'  => false == $field->args( 'include_post_title' ) ? false : true,
 			) ),
 		) );
+
+		if( !empty($title) ) {
+			echo '<div id="find-posts-clear"  class="dashicons cmb2-post-remove-button dashicons-trash"></div>';
+		}
 
 	}
 
@@ -273,12 +274,12 @@ class CMB2_Post_Search_field {
 			};
 
 			window.cmb2_post_search.clear = function ( ) {
-				var $this = $( this );
+				var $this = $( this ).parent();
 				//var search = window.cmb2_post_search;
 				//attached-post-title
-				$( '.cmb-type-post-search-text .cmb-td input[type="text"]' ).val('')
-					.parents().find('.attached-post-title').text('')
-					.end().find('#find-posts-clear').remove();
+				$this.find( 'input[type="text"]' ).val('');
+				$this.find('.attached-post-title').text('');
+				$this.find('#find-posts-clear').remove();
 					//console.log('hi there. Clearing. $this', $this);
 			};
 
